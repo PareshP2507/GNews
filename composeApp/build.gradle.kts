@@ -31,6 +31,11 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -47,6 +52,16 @@ kotlin {
 
             // Navigation
             implementation(libs.compose.navigation)
+
+            // Koin - dependency injection
+//            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
+            // Ktor - Networking
+            implementation(libs.ktor.client.core)
+
+            // Coroutines
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }
