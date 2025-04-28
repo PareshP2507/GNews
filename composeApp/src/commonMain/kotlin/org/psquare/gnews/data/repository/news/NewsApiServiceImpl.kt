@@ -1,11 +1,10 @@
-package org.psquare.gnews.data
+package org.psquare.gnews.data.repository.news
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLProtocol
-import io.ktor.http.parameters
-import io.ktor.http.path
+import io.ktor.http.encodedPath
 import org.psquare.gnews.data.entities.ArticleResponse
 
 class NewsApiServiceImpl(
@@ -18,13 +17,11 @@ class NewsApiServiceImpl(
     override suspend fun getNewsArticles(category: String): ArticleResponse {
         val response = httpClient.get {
             url {
-                protocol = URLProtocol.HTTP
+                protocol = URLProtocol.HTTPS
                 host = this@NewsApiServiceImpl.host
-                path(topHeadline)
-                parameters {
-                    append("category", category)
-                    append("apikey", apiKey)
-                }
+                encodedPath = topHeadline
+                parameters.append("category", category)
+                parameters.append("apikey", apiKey)
             }
         }
         return response.body<ArticleResponse>()

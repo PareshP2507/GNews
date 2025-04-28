@@ -1,9 +1,8 @@
-package org.psquare.gnews.data.repository
+package org.psquare.gnews.data.repository.news
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import org.psquare.gnews.data.NewsApiService
 import org.psquare.gnews.data.entities.ArticleResponse
 
 class RemoteNewsDataSource(

@@ -1,4 +1,4 @@
-package org.psquare.gnews.data
+package org.psquare.gnews.data.repository.news
 
 import org.psquare.gnews.data.entities.ArticleResponse
 

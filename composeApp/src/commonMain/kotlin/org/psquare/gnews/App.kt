@@ -7,9 +7,11 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
+import org.psquare.gnews.di.categoryModule
 import org.psquare.gnews.di.datasourceModule
 import org.psquare.gnews.di.networkModule
 import org.psquare.gnews.di.repositoryModule
+import org.psquare.gnews.di.viewModelModule
 import org.psquare.gnews.ui.screen.FeedScreen
 import org.psquare.gnews.ui.theme.AppTheme
 
@@ -17,7 +19,7 @@ import org.psquare.gnews.ui.theme.AppTheme
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(networkModule, datasourceModule, repositoryModule)
+        modules(networkModule, datasourceModule, repositoryModule, categoryModule, viewModelModule)
     }) {
         AppTheme {
             val navController = rememberNavController()

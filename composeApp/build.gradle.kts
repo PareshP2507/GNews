@@ -54,14 +54,22 @@ kotlin {
             implementation(libs.compose.navigation)
 
             // Koin - dependency injection
-//            implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
 
             // Ktor - Networking
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.json.serialization)
 
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
+
+            // Napier
+            implementation(libs.napier)
+
+            // Kamel - image loading lib
+            implementation(libs.kamel)
         }
     }
 }
