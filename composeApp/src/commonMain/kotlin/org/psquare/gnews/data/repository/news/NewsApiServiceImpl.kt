@@ -20,10 +20,15 @@ class NewsApiServiceImpl(
                 protocol = URLProtocol.HTTPS
                 host = this@NewsApiServiceImpl.host
                 encodedPath = topHeadline
+                parameters.append("lang", LANGUAGE_EN)
                 parameters.append("category", category)
                 parameters.append("apikey", apiKey)
             }
         }
         return response.body<ArticleResponse>()
+    }
+
+    private companion object {
+        const val LANGUAGE_EN = "en"
     }
 }

@@ -3,6 +3,7 @@ package org.psquare.gnews.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +29,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -117,11 +120,25 @@ private fun Article(
     onFavClick: (ArticleEntity) -> Unit
 ) {
     Row(modifier = Modifier.clickable { onClick.invoke(articleEntity) }) {
-        KamelImage(
-            { asyncPainterResource(articleEntity.image) }, contentDescription = null,
-            modifier = Modifier.padding(16.dp).size(80.dp).clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Crop
-        )
+        Box(
+            modifier = Modifier.padding(16.dp)
+                .size(80.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(color = MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            KamelImage(
+                { asyncPainterResource(articleEntity.image) },
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                onLoading = { progress ->
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(32.dp),
+                        progress = { progress }
+                    )
+                }
+            )
+        }
         Column(modifier = Modifier.weight(1f).padding(top = 16.dp, bottom = 16.dp)) {
             Text(
                 text = articleEntity.title,
