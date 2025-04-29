@@ -6,6 +6,6 @@ data class ArticleEntity(
     val content: String,
     val url: String,
     val image: String,
-    val publishedAt: String,
+    val elapsedTime: String,
     val sourceName: String
 )

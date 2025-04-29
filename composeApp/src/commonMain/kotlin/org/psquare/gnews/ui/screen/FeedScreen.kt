@@ -137,7 +137,7 @@ private fun Article(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = articleEntity.publishedAt,
+                text = articleEntity.elapsedTime,
                 style = MaterialTheme.typography.labelMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

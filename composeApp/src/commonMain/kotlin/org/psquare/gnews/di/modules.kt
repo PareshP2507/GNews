@@ -4,10 +4,13 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.psquare.gnews.data.dateconverter.DateConverter
+import org.psquare.gnews.data.dateconverter.DateConverterImpl
 import org.psquare.gnews.data.repository.category.BusinessCategory
 import org.psquare.gnews.data.repository.category.Category
 import org.psquare.gnews.data.repository.category.EntertainmentCategory
@@ -62,7 +65,8 @@ internal val datasourceModule = module {
 }
 
 internal val repositoryModule = module {
-    factory<NewsRepository> { NewsRepositoryImpl(get()) }
+    singleOf<DateConverter>(::DateConverterImpl)
+    factory<NewsRepository> { NewsRepositoryImpl(get(), get()) }
 }
 
 internal val categoryModule = module {

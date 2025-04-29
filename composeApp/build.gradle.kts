@@ -50,6 +50,9 @@ kotlin {
             // Kotlinx-serialization
             implementation(libs.kotlinx.serialization.json)
 
+            // Kotlinx-datetime
+            implementation(libs.kotlinx.datetime)
+
             // Navigation
             implementation(libs.compose.navigation)
 

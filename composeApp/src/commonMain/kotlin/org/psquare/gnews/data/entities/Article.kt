@@ -22,12 +22,12 @@ data class RemoteArticle(
 @Serializable
 data class Source(val name: String, val url: String)
 
-fun RemoteArticle.toDomain() = ArticleEntity(
+fun RemoteArticle.toDomain(elapsedTime: String) = ArticleEntity(
     title = this.title,
     description = this.description,
     content = this.content,
     url = this.url,
     image = this.image,
-    publishedAt = this.publishedAt,
+    elapsedTime = elapsedTime,
     sourceName = this.source.name
 )
