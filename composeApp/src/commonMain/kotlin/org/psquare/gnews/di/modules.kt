@@ -23,6 +23,7 @@ import org.psquare.gnews.data.repository.category.ScienceCategory
 import org.psquare.gnews.data.repository.category.SportsCategory
 import org.psquare.gnews.data.repository.category.TechnologyCategory
 import org.psquare.gnews.data.repository.category.WorldCategory
+import org.psquare.gnews.data.repository.news.FakeNewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.NewsApiService
 import org.psquare.gnews.data.repository.news.NewsApiServiceImpl
 import org.psquare.gnews.data.repository.news.NewsDataSource
@@ -75,6 +76,7 @@ internal val datasourceModule = module {
 internal val repositoryModule = module {
     singleOf<DateConverter>(::DateConverterImpl)
     factory<NewsRepository> { NewsRepositoryImpl(get(), get()) }
+//    factory<NewsRepository> { FakeNewsRepositoryImpl() }
 }
 
 internal val categoryModule = module {

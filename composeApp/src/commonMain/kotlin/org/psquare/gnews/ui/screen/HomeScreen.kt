@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,11 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -27,6 +25,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,21 +35,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 import org.psquare.gnews.data.repository.category.Category
 import org.psquare.gnews.domain.entities.ArticleEntity
 
 @Composable
 fun HomeScreen() {
+    val viewModel: HomeViewModel = koinViewModel<HomeViewModel>()
     val snackBarHostState = remember { SnackbarHostState() }
     Scaffold(
         topBar = { HomeAppbar() },
         snackbarHost = { SnackbarHost(snackBarHostState) }) { innerPadding ->
-        Content(modifier = Modifier.padding(innerPadding))
+        Content(modifier = Modifier.padding(innerPadding), viewModel)
     }
 }
 
@@ -67,13 +65,11 @@ private fun HomeAppbar(
 
 @Composable
 private fun Content(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel
 ) {
-    val viewModel: HomeViewModel = koinViewModel()
-    val uiState by viewModel.homeUiState.collectAsStateWithLifecycle()
-    Column(modifier = modifier) {
-        val categories = getKoin().getAll<Category>()
-        viewModel.initWithCategories(categories)
+    val uiState by viewModel.homeUiState.collectAsState()
+    Column(modifier = modifier.fillMaxSize()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
@@ -85,13 +81,41 @@ private fun Content(
                 }
             }
         }
-        LazyColumn(
-            modifier = Modifier.padding(0.dp),
-            contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
-        ) {
-            items(uiState.articles) { article ->
-                Article(articleEntity = article, onClick = {}, onFavClick = {})
+        if (uiState.isFeedLoading) {
+            Loader()
+        } else {
+            val articles = uiState.articles
+            if (articles.isEmpty()) {
+                EmptyState()
+            } else {
+                FeedList(articles = articles)
             }
+        }
+    }
+}
+
+@Composable
+fun Loader(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator(modifier = modifier.size(40.dp))
+    }
+}
+
+@Composable
+fun EmptyState(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = "No data available.", style = MaterialTheme.typography.labelMedium)
+    }
+}
+
+@Composable
+fun FeedList(modifier: Modifier = Modifier, articles: List<ArticleEntity>) {
+    LazyColumn(
+        modifier = modifier.padding(0.dp),
+        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
+    ) {
+        items(articles) { article ->
+            Article(articleEntity = article) {}
         }
     }
 }
@@ -107,7 +131,8 @@ private fun CategoryTab(category: Category, isSelected: Boolean, onClick: (Categ
     Text(
         text = category.name(),
         style = MaterialTheme.typography.labelLarge,
-        modifier = Modifier.clip(shape).clickable(onClick = { onClick.invoke(category) })
+        modifier = Modifier.clip(shape)
+            .clickable(onClick = { onClick.invoke(category) })
             .background(color = bgColor)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     )
@@ -116,8 +141,7 @@ private fun CategoryTab(category: Category, isSelected: Boolean, onClick: (Categ
 @Composable
 private fun Article(
     articleEntity: ArticleEntity,
-    onClick: (ArticleEntity) -> Unit,
-    onFavClick: (ArticleEntity) -> Unit
+    onClick: (ArticleEntity) -> Unit
 ) {
     Row(modifier = Modifier.clickable { onClick.invoke(articleEntity) }) {
         Box(
@@ -160,11 +184,5 @@ private fun Article(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        Icon(
-            imageVector = Icons.Default.FavoriteBorder,
-            contentDescription = null,
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
-                .clickable { onFavClick.invoke(articleEntity) }
-        )
     }
 }
