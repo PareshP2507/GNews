@@ -1,16 +1,17 @@
 package org.psquare.gnews.data.repository.news
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.psquare.gnews.data.entities.ArticleResponse
+import org.psquare.util.NetworkResult
 
 class RemoteNewsDataSource(
-    private val newsApiService: NewsApiService
+    private val newsApiService: NewsApiService,
+    private val coroutineDispatcher: CoroutineDispatcher
 ) : NewsDataSource.Remote {
 
-    override suspend fun getArticles(category: String): ArticleResponse =
-        withContext(Dispatchers.IO) {
+    override suspend fun getArticles(category: String): NetworkResult<ArticleResponse> =
+        withContext(coroutineDispatcher) {
             newsApiService.getNewsArticles(category)
         }
 }

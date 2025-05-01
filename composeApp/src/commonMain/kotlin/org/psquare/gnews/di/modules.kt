@@ -3,6 +3,8 @@ package org.psquare.gnews.di
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
@@ -38,18 +40,24 @@ private const val API_KEY_VALUE = "ae16d57e7724fd11d24ec18de55aa809"
 private const val HEADLINES_PATH_KEY = "top-headlines"
 private const val HEADLINES_PATH_VALUE = "/api/v4/top-headlines"
 
+private const val DISPATCHER_IO = "io"
+private const val DISPATCHER_MAIN = "main"
+private const val DISPATCHER_DEFAULT = "default"
+
 internal val networkModule = module {
     single(named(HOST_KEY)) { HOST_VALUE }
     single(named(API_KEY)) { API_KEY_VALUE }
     single(named(HEADLINES_PATH_KEY)) { HEADLINES_PATH_VALUE }
-    single { HttpClient {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
+    single {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                })
+            }
         }
-    } }
+    }
     single<NewsApiService> {
         NewsApiServiceImpl(
             get(named(HOST_KEY)),
@@ -61,7 +69,7 @@ internal val networkModule = module {
 }
 
 internal val datasourceModule = module {
-    factory<NewsDataSource.Remote> { RemoteNewsDataSource(get()) }
+    factory<NewsDataSource.Remote> { RemoteNewsDataSource(get(), get(named(DISPATCHER_IO))) }
 }
 
 internal val repositoryModule = module {
@@ -83,4 +91,10 @@ internal val categoryModule = module {
 
 internal val viewModelModule = module {
     viewModel { FeedViewModel(get()) }
+}
+
+internal val dispatchersModule = module {
+    single(named(DISPATCHER_IO)) { Dispatchers.IO }
+    single(named(DISPATCHER_MAIN)) { Dispatchers.Main }
+    single(named(DISPATCHER_DEFAULT)) { Dispatchers.Default }
 }
