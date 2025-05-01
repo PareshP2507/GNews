@@ -45,10 +45,10 @@ import org.psquare.gnews.data.repository.category.Category
 import org.psquare.gnews.domain.entities.ArticleEntity
 
 @Composable
-fun FeedScreen() {
+fun HomeScreen() {
     val snackBarHostState = remember { SnackbarHostState() }
     Scaffold(
-        topBar = { FeedAppbar() },
+        topBar = { HomeAppbar() },
         snackbarHost = { SnackbarHost(snackBarHostState) }) { innerPadding ->
         Content(modifier = Modifier.padding(innerPadding))
     }
@@ -56,7 +56,7 @@ fun FeedScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FeedAppbar(
+private fun HomeAppbar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -69,8 +69,8 @@ private fun FeedAppbar(
 private fun Content(
     modifier: Modifier = Modifier
 ) {
-    val viewModel: FeedViewModel = koinViewModel()
-    val uiState by viewModel.feedUiState.collectAsStateWithLifecycle()
+    val viewModel: HomeViewModel = koinViewModel()
+    val uiState by viewModel.homeUiState.collectAsStateWithLifecycle()
     Column(modifier = modifier) {
         val categories = getKoin().getAll<Category>()
         viewModel.initWithCategories(categories)

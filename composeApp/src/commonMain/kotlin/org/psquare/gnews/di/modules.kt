@@ -29,7 +29,7 @@ import org.psquare.gnews.data.repository.news.NewsDataSource
 import org.psquare.gnews.data.repository.news.NewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.RemoteNewsDataSource
 import org.psquare.gnews.domain.repository.NewsRepository
-import org.psquare.gnews.ui.screen.FeedViewModel
+import org.psquare.gnews.ui.screen.HomeViewModel
 
 private const val HOST_KEY = "endpoint"
 private const val HOST_VALUE = "gnews.io"
@@ -90,7 +90,7 @@ internal val categoryModule = module {
 }
 
 internal val viewModelModule = module {
-    viewModel { FeedViewModel(get()) }
+    viewModel { HomeViewModel(get()) }
 }
 
 internal val dispatchersModule = module {

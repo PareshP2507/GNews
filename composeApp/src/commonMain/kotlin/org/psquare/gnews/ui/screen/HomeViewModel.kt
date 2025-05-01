@@ -10,20 +10,20 @@ import org.psquare.gnews.data.repository.category.Category
 import org.psquare.gnews.domain.entities.ArticleEntity
 import org.psquare.gnews.domain.repository.NewsRepository
 
-class FeedViewModel(
+class HomeViewModel(
     private val newsRepository: NewsRepository,
 ) : ViewModel() {
 
-    private val _feedUiState = MutableStateFlow(FeedUiState())
-    val feedUiState = _feedUiState.asStateFlow()
+    private val _homeUiState = MutableStateFlow(HomeUiState())
+    val homeUiState = _homeUiState.asStateFlow()
 
     fun initWithCategories(categoryList: List<Category>) {
-        _feedUiState.update { feedUiState -> feedUiState.copy(categories = categoryList) }
+        _homeUiState.update { homeUiState -> homeUiState.copy(categories = categoryList) }
         selectFirstCategory()
     }
 
     private fun selectFirstCategory() {
-        _feedUiState.value.categories.getOrNull(index = 0)?.let { category ->
+        _homeUiState.value.categories.getOrNull(index = 0)?.let { category ->
             onCategorySelected(category)
         }
     }
@@ -31,18 +31,18 @@ class FeedViewModel(
     private fun retrieveArticlesFor(category: Category) {
         viewModelScope.launch {
             val articles = newsRepository.getArticles(category.urlParamName())
-            _feedUiState.update { feedUiState -> feedUiState.copy(articles = articles) }
+            _homeUiState.update { homeUiState -> homeUiState.copy(articles = articles) }
         }
     }
 
     fun onCategorySelected(category: Category) {
-        _feedUiState.update { feedUiState ->
-            feedUiState.copy(selectedCategory = category)
+        _homeUiState.update { homeUiState ->
+            homeUiState.copy(selectedCategory = category)
         }
         retrieveArticlesFor(category)
     }
 
-    data class FeedUiState(
+    data class HomeUiState(
         val categories: List<Category> = emptyList(),
         val selectedCategory: Category? = null,
         val articles: List<ArticleEntity> = emptyList()

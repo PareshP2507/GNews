@@ -13,7 +13,7 @@ import org.psquare.gnews.di.dispatchersModule
 import org.psquare.gnews.di.networkModule
 import org.psquare.gnews.di.repositoryModule
 import org.psquare.gnews.di.viewModelModule
-import org.psquare.gnews.ui.screen.FeedScreen
+import org.psquare.gnews.ui.screen.HomeScreen
 import org.psquare.gnews.ui.theme.AppTheme
 
 @Composable
@@ -32,12 +32,12 @@ fun App() {
         AppTheme {
             val navController = rememberNavController()
 
-            NavHost(navController = navController, startDestination = Feed) {
-                composable<Feed> { FeedScreen() }
+            NavHost(navController = navController, startDestination = Home) {
+                composable<Home> { HomeScreen() }
             }
         }
     }
 }
 
 @Serializable
-object Feed
+object Home
