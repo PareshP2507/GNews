@@ -112,7 +112,7 @@ fun EmptyState(modifier: Modifier = Modifier) {
 fun FeedList(modifier: Modifier = Modifier, articles: List<ArticleEntity>) {
     LazyColumn(
         modifier = modifier.padding(0.dp),
-        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
+        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) {
         items(articles) { article ->
             Article(articleEntity = article) {}
@@ -163,7 +163,7 @@ private fun Article(
                 }
             )
         }
-        Column(modifier = Modifier.weight(1f).padding(top = 16.dp, bottom = 16.dp)) {
+        Column(modifier = Modifier.weight(1f).padding(top = 16.dp, bottom = 16.dp, end = 16.dp)) {
             Text(
                 text = articleEntity.title,
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium),
