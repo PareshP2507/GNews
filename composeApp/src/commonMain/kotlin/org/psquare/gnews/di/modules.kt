@@ -23,14 +23,13 @@ import org.psquare.gnews.data.repository.category.ScienceCategory
 import org.psquare.gnews.data.repository.category.SportsCategory
 import org.psquare.gnews.data.repository.category.TechnologyCategory
 import org.psquare.gnews.data.repository.category.WorldCategory
-import org.psquare.gnews.data.repository.news.FakeNewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.NewsApiService
 import org.psquare.gnews.data.repository.news.NewsApiServiceImpl
 import org.psquare.gnews.data.repository.news.NewsDataSource
 import org.psquare.gnews.data.repository.news.NewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.RemoteNewsDataSource
 import org.psquare.gnews.domain.repository.NewsRepository
-import org.psquare.gnews.ui.screen.HomeViewModel
+import org.psquare.gnews.ui.screen.home.HomeViewModel
 
 private const val HOST_KEY = "endpoint"
 private const val HOST_VALUE = "gnews.io"

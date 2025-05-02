@@ -1,4 +1,4 @@
-package org.psquare.gnews.ui.screen
+package org.psquare.gnews.ui.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -42,13 +43,15 @@ import org.psquare.gnews.data.repository.category.Category
 import org.psquare.gnews.domain.entities.ArticleEntity
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onArticleClick: (ArticleEntity) -> Unit
+) {
     val viewModel: HomeViewModel = koinViewModel<HomeViewModel>()
     val snackBarHostState = remember { SnackbarHostState() }
     Scaffold(
         topBar = { HomeAppbar() },
         snackbarHost = { SnackbarHost(snackBarHostState) }) { innerPadding ->
-        Content(modifier = Modifier.padding(innerPadding), viewModel)
+        Content(modifier = Modifier.padding(innerPadding), viewModel, onArticleClick)
     }
 }
 
@@ -66,9 +69,10 @@ private fun HomeAppbar(
 @Composable
 private fun Content(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    onArticleClick: (ArticleEntity) -> Unit
 ) {
-    val uiState by viewModel.homeUiState.collectAsState()
+    val uiState by viewModel.homeUiState.collectAsStateWithLifecycle()
     Column(modifier = modifier.fillMaxSize()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -88,7 +92,7 @@ private fun Content(
             if (articles.isEmpty()) {
                 EmptyState()
             } else {
-                FeedList(articles = articles)
+                FeedList(articles = articles, onArticleClick = onArticleClick)
             }
         }
     }
@@ -109,13 +113,17 @@ fun EmptyState(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun FeedList(modifier: Modifier = Modifier, articles: List<ArticleEntity>) {
+fun FeedList(
+    modifier: Modifier = Modifier,
+    articles: List<ArticleEntity>,
+    onArticleClick: (ArticleEntity) -> Unit
+) {
     LazyColumn(
         modifier = modifier.padding(0.dp),
         contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) {
         items(articles) { article ->
-            Article(articleEntity = article) {}
+            Article(articleEntity = article) { articleEntity -> onArticleClick.invoke(articleEntity) }
         }
     }
 }
