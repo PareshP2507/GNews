@@ -1,4 +1,4 @@
-package org.psquare.gnews.ui.screen
+package org.psquare.gnews.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +19,7 @@ class HomeViewModel(
     val homeUiState = _homeUiState.asStateFlow()
 
     init {
-        val categories = getKoin().getAll<Category>()
+        val categories = getKoin().getAll<Category>().sortedBy { it.name() }
         initWithCategories(categories)
     }
 
