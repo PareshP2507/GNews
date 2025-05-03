@@ -35,7 +35,7 @@ private const val HOST_KEY = "endpoint"
 private const val HOST_VALUE = "gnews.io"
 
 private const val API_KEY = "apikey"
-private const val API_KEY_VALUE = "ae16d57e7724fd11d24ec18de55aa809"
+private const val API_KEY_VALUE = "your_api_key" // Put the api key here
 
 private const val HEADLINES_PATH_KEY = "top-headlines"
 private const val HEADLINES_PATH_VALUE = "/api/v4/top-headlines"
