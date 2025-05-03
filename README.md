@@ -2,7 +2,7 @@
 
 GNews is a Kotlin Multiplatform project designed to deliver a seamless news browsing experience across Android and iOS platforms. It leverages modern libraries and frameworks to ensure a robust and efficient application.
 
-## Features
+## Technology Stack
 
 - [**Compose Multiplatform**](https://www.jetbrains.com/compose-multiplatform/): Unified UI development for Android and iOS.
 - [**Ktor**](https://ktor.io/docs/client-create-multiplatform-application.html): Handles remote API calls for fetching news data.
