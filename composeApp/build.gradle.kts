@@ -68,9 +68,6 @@ kotlin {
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
 
-            // Napier
-            implementation(libs.napier)
-
             // Kamel - image loading lib
             implementation(libs.kamel)
         }
