@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -61,7 +60,7 @@ private fun HomeAppbar(
 ) {
     TopAppBar(
         modifier = modifier,
-        title = { Text(text = "Top Headlines", style = MaterialTheme.typography.headlineLarge) }
+        title = { Text(text = "Top Headlines", style = MaterialTheme.typography.headlineMedium) }
     )
 }
 
@@ -173,14 +172,14 @@ private fun Article(
         Column(modifier = Modifier.weight(1f).padding(top = 16.dp, bottom = 16.dp, end = 16.dp)) {
             Text(
                 text = articleEntity.title,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium),
+                style = MaterialTheme.typography.titleMedium,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.size(4.dp))
             Text(
                 text = "${articleEntity.sourceName} · ${articleEntity.elapsedTime}",
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
