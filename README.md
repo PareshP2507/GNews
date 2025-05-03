@@ -1,14 +1,36 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# GNews - A Simple News App
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+GNews is a Kotlin Multiplatform project designed to deliver a seamless news browsing experience across Android and iOS platforms. It leverages modern libraries and frameworks to ensure a robust and efficient application.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Features
 
+- **Compose Multiplatform**: Unified UI development for Android and iOS.
+- **Ktor**: Handles remote API calls for fetching news data.
+- **Kotlinx Serialization**: Simplifies JSON serialization and deserialization.
+- **Coroutines**: Enables asynchronous operations for smooth performance.
+- **Koin**: Dependency injection framework for better modularity and testability.
+- **Kamel**: Efficient image loading and caching.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Project Structure
+
+### `/composeApp`
+This module contains shared code for the Compose Multiplatform UI. It includes:
+
+- `commonMain`: Houses code common to all platforms.
+- Platform-specific folders (e.g., `iosMain`, `androidMain`): For platform-specific implementations, such as integrating native APIs.
+
+### `/iosApp`
+This module contains the iOS-specific entry point. It is also where you can add SwiftUI code if needed.
+
+## Screenshots
+
+Here are some snapshots of the app:
+
+|               Light theme               |                Dark theme               |
+|-----------------------------------------|-----------------------------------------|
+| ![Android](snaps/android_light.png)     | ![Android](snaps/android_dark.png)      |
+| ![iOS](snaps/ios_light.png)             | ![iOS](snaps/ios_dark.png)              |
+
+## Learn More
+
+To get started with Kotlin Multiplatform, visit the [official documentation](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html).
