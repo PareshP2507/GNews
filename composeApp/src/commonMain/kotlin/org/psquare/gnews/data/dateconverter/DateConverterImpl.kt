@@ -3,15 +3,21 @@ package org.psquare.gnews.data.dateconverter
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.isDistantFuture
 import kotlinx.datetime.periodUntil
 
 /** Implementation of [DateConverter] */
-class DateConverterImpl : DateConverter {
+class DateConverterImpl(private val clock: Clock = Clock.System) : DateConverter {
 
     override fun intoElapsedTime(date: String): String {
-        val now = Clock.System.now()
-        val instantPast: Instant = Instant.parse(date)
+        val now = clock.now()
+        val instantPast: Instant = try {
+            Instant.parse(date)
+        } catch (ex: Exception) {
+            return ""
+        }
         val periods = instantPast.periodUntil(now, TimeZone.UTC)
+
         val days = periods.days
         val hours = periods.hours
         val minutes = periods.minutes

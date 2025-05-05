@@ -71,6 +71,9 @@ kotlin {
             // Kamel - image loading lib
             implementation(libs.kamel)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
 
