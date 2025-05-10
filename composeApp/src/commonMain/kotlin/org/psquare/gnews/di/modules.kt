@@ -24,8 +24,8 @@ import org.psquare.gnews.data.repository.category.ScienceCategory
 import org.psquare.gnews.data.repository.category.SportsCategory
 import org.psquare.gnews.data.repository.category.TechnologyCategory
 import org.psquare.gnews.data.repository.category.WorldCategory
-import org.psquare.gnews.data.repository.news.NewsApiService
-import org.psquare.gnews.data.repository.news.NewsApiServiceImpl
+import org.psquare.gnews.data.api.NewsApiService
+import org.psquare.gnews.data.api.NewsApiServiceImpl
 import org.psquare.gnews.data.repository.news.NewsDataSource
 import org.psquare.gnews.data.repository.news.NewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.RemoteNewsDataSource

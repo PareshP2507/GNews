@@ -2,6 +2,7 @@ package org.psquare.gnews.data.repository.news
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import org.psquare.gnews.data.api.NewsApiService
 import org.psquare.gnews.data.entities.ArticleResponse
 import org.psquare.util.NetworkResult
 

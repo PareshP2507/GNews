@@ -1,4 +1,4 @@
-package org.psquare.gnews.data.repository.news
+package org.psquare.gnews.data.api
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
