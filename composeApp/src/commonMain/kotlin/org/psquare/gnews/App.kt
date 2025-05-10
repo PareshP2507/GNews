@@ -12,6 +12,7 @@ import org.psquare.gnews.di.categoryModule
 import org.psquare.gnews.di.datasourceModule
 import org.psquare.gnews.di.dispatchersModule
 import org.psquare.gnews.di.networkModule
+import org.psquare.gnews.di.platformDbModule
 import org.psquare.gnews.di.repositoryModule
 import org.psquare.gnews.di.viewModelModule
 import org.psquare.gnews.domain.entities.ArticleEntity
@@ -29,7 +30,8 @@ fun App() {
             repositoryModule,
             categoryModule,
             viewModelModule,
-            dispatchersModule
+            dispatchersModule,
+            platformDbModule
         )
     }) {
         AppTheme {

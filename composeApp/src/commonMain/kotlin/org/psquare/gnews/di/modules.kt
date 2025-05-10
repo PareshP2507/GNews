@@ -6,6 +6,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -43,6 +44,8 @@ private const val HEADLINES_PATH_VALUE = "/api/v4/top-headlines"
 private const val DISPATCHER_IO = "io"
 private const val DISPATCHER_MAIN = "main"
 private const val DISPATCHER_DEFAULT = "default"
+
+internal expect val platformDbModule: Module
 
 internal val networkModule = module {
     single(named(HOST_KEY)) { HOST_VALUE }

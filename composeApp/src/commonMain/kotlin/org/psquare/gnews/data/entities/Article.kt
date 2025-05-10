@@ -1,5 +1,8 @@
 package org.psquare.gnews.data.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.psquare.gnews.domain.entities.ArticleEntity
 
@@ -21,6 +24,28 @@ data class RemoteArticle(
 
 @Serializable
 data class Source(val name: String, val url: String)
+
+@Serializable
+@Entity(tableName = "article_master")
+data class DbArticleEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @SerialName("title")
+    val title: String,
+    @SerialName("description")
+    val description: String,
+    @SerialName("content")
+    val content: String,
+    @SerialName("url")
+    val url: String,
+    @SerialName("image")
+    val image: String,
+    @SerialName("publishedAt")
+    val publishedAt: String,
+    @SerialName("source_name")
+    val sourceName: String,
+    @SerialName("source_url")
+    val sourceUrl: String
+)
 
 fun RemoteArticle.toDomain(elapsedTime: String) = ArticleEntity(
     title = this.title,

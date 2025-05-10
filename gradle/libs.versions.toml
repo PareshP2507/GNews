@@ -5,16 +5,18 @@ android-minSdk = "28"
 android-targetSdk = "35"
 androidx-activityCompose = "1.10.1"
 androidx-lifecycle = "2.8.4"
+androidx-room = "2.7.1"
+sqlite = "2.5.1"
 compose-multiplatform = "1.7.3"
 compose-navigation = "2.8.0-alpha10"
 kotlin = "2.1.10"
 kotlinx-serialization = "1.8.0"
 kotlinx-datetime = "0.6.2"
+ksp = "2.1.10-1.0.31"
 koin = "4.0.3"
 ktor = "3.1.2"
 coroutines = "1.10.1"
 kamel = "1.0.3"
-mockk = "1.14.2"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -48,6 +50,11 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 # Kamel image loader
 kamel = { group = "media.kamel", name = "kamel-image-default", version.ref = "kamel" }
 
+#Room - database
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -55,3 +62,6 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-mu
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+androidKmpLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "androidx-room" }
