@@ -46,7 +46,11 @@ private const val DISPATCHER_IO = "io"
 private const val DISPATCHER_MAIN = "main"
 private const val DISPATCHER_DEFAULT = "default"
 
+internal const val DATASTORE_FILE_NAME = "gnews.preferences_pb"
+
 internal expect val platformDbModule: Module
+
+internal expect val platformDataStoreModule: Module
 
 internal val networkModule = module {
     single(named(HOST_KEY)) { HOST_VALUE }

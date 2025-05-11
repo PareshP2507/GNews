@@ -9,6 +9,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.psquare.gnews.data.db.DB_FILE_NAME
 import org.psquare.gnews.data.db.GNewsDatabase
+import org.psquare.gnews.init.createDataStore
 
 internal actual val platformDbModule: Module
     get() = module {
@@ -20,3 +21,11 @@ private fun createGNewsDatabase(context: Context): GNewsDatabase =
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
+
+internal actual val platformDataStoreModule: Module
+    get() = module {
+        single { createDataStore { createDataStoreFilePath(androidContext())  } }
+    }
+
+private fun createDataStoreFilePath(context: Context) =
+    context.filesDir.resolve(DATASTORE_FILE_NAME).absolutePath

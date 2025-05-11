@@ -3,6 +3,7 @@ package org.psquare.gnews.init
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.psquare.gnews.di.categoryModule
+import org.psquare.gnews.di.platformDataStoreModule
 import org.psquare.gnews.di.datasourceModule
 import org.psquare.gnews.di.dispatchersModule
 import org.psquare.gnews.di.networkModule
@@ -20,7 +21,8 @@ fun initKoin(onKoinStart: KoinApplication.() -> Unit) {
             categoryModule,
             viewModelModule,
             dispatchersModule,
-            platformDbModule
+            platformDbModule,
+            platformDataStoreModule
         )
     }
 }

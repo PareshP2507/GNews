@@ -9,6 +9,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.psquare.gnews.data.db.DB_FILE_NAME
 import org.psquare.gnews.data.db.GNewsDatabase
+import org.psquare.gnews.init.createDataStore
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL
@@ -38,3 +39,20 @@ private fun fileDirectory(): String {
     )
     return requireNotNull(documentDirectory).path!!
 }
+
+@OptIn(ExperimentalForeignApi::class)
+fun getDataStoreFilePath(): String {
+    val documentDir: NSURL? = NSFileManager.defaultManager.URLForDirectory(
+        directory = NSDocumentDirectory,
+        inDomain = NSUserDomainMask,
+        appropriateForURL = null,
+        create = false,
+        error = null,
+    )
+    return requireNotNull(documentDir).path + "/$DATASTORE_FILE_NAME"
+}
+
+internal actual val platformDataStoreModule: Module
+    get() = module {
+        single { createDataStore { getDataStoreFilePath() } }
+    }
