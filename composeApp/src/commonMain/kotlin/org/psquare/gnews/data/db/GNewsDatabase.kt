@@ -1,5 +1,6 @@
 package org.psquare.gnews.data.db
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
@@ -7,6 +8,7 @@ import org.psquare.gnews.data.db.dao.ArticleDao
 import org.psquare.gnews.data.entities.DbArticleEntity
 
 @Database(entities = [DbArticleEntity::class], version = 1)
+@ConstructedBy(GNewsDatabaseConstructor::class)
 abstract class GNewsDatabase : RoomDatabase() {
     abstract val articleDao: ArticleDao
 }

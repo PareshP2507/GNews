@@ -44,7 +44,31 @@ data class DbArticleEntity(
     @SerialName("source_name")
     val sourceName: String,
     @SerialName("source_url")
-    val sourceUrl: String
+    val sourceUrl: String,
+    @SerialName("category")
+    val category: String
+)
+
+fun RemoteArticle.toDbEntity(category: String) = DbArticleEntity(
+    title = this.title,
+    description = this.description,
+    content = this.content,
+    url = this.url,
+    image = this.image,
+    publishedAt = this.publishedAt,
+    sourceName = this.source.name,
+    sourceUrl = this.source.url,
+    category = category
+)
+
+fun DbArticleEntity.toDomain(elapsedTime: String) = ArticleEntity(
+    title = this.title,
+    description = this.description,
+    content = this.content,
+    url = this.url,
+    image = this.image,
+    elapsedTime = elapsedTime,
+    sourceName = this.sourceName
 )
 
 fun RemoteArticle.toDomain(elapsedTime: String) = ArticleEntity(

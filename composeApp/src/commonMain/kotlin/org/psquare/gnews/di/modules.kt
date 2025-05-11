@@ -26,6 +26,7 @@ import org.psquare.gnews.data.repository.category.TechnologyCategory
 import org.psquare.gnews.data.repository.category.WorldCategory
 import org.psquare.gnews.data.api.NewsApiService
 import org.psquare.gnews.data.api.NewsApiServiceImpl
+import org.psquare.gnews.data.repository.news.LocalNewsDataSource
 import org.psquare.gnews.data.repository.news.NewsDataSource
 import org.psquare.gnews.data.repository.news.NewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.RemoteNewsDataSource
@@ -73,12 +74,12 @@ internal val networkModule = module {
 
 internal val datasourceModule = module {
     factory<NewsDataSource.Remote> { RemoteNewsDataSource(get(), get(named(DISPATCHER_IO))) }
+    factory<NewsDataSource.Local> { LocalNewsDataSource(get()) }
 }
 
 internal val repositoryModule = module {
     singleOf<DateConverter>(::DateConverterImpl)
-    factory<NewsRepository> { NewsRepositoryImpl(get(), get()) }
-//    factory<NewsRepository> { FakeNewsRepositoryImpl() }
+    factory<NewsRepository> { NewsRepositoryImpl(get(), get(), get(), get(named(DISPATCHER_IO))) }
 }
 
 internal val categoryModule = module {

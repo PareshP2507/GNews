@@ -9,8 +9,8 @@ import org.psquare.gnews.data.entities.DbArticleEntity
 
 @Dao
 interface ArticleDao {
-    @Query("SELECT * FROM article_master")
-    fun getAllAsFlow(): Flow<List<DbArticleEntity>>
+    @Query("SELECT * FROM article_master WHERE category = :category")
+    fun getAllAsFlow(category: String): Flow<List<DbArticleEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(articles: List<DbArticleEntity>)

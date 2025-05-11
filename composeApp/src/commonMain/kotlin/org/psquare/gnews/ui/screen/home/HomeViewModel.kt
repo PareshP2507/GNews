@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -36,11 +37,12 @@ class HomeViewModel(
 
     private fun retrieveArticlesFor(category: Category) {
         viewModelScope.launch {
-            _homeUiState.update { homeUiState -> homeUiState.copy(isFeedLoading = true) }
-            val articles = newsRepository.getArticles(category.urlParamName())
-            _homeUiState.update { homeUiState ->
-                homeUiState.copy(isFeedLoading = false, articles = articles)
-            }
+            newsRepository.getArticlesAsFlow(category.urlParamName())
+                .collectLatest {
+                    _homeUiState.update { homeUiState ->
+                        homeUiState.copy(articles = it)
+                    }
+                }
         }
     }
 
@@ -49,6 +51,11 @@ class HomeViewModel(
             homeUiState.copy(selectedCategory = category)
         }
         retrieveArticlesFor(category)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        newsRepository.onCleared()
     }
 
     data class HomeUiState(
