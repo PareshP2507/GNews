@@ -37,10 +37,17 @@ class HomeViewModel(
 
     private fun retrieveArticlesFor(category: Category) {
         viewModelScope.launch {
+            _homeUiState.update { homeUiState ->
+                homeUiState.copy(isFeedLoading = true)
+            }
             newsRepository.getArticlesAsFlow(category.urlParamName())
-                .collectLatest {
-                    _homeUiState.update { homeUiState ->
-                        homeUiState.copy(articles = it)
+                .collectLatest { articles ->
+                    if (articles.isEmpty()) {
+                        newsRepository.refreshArticles(category.urlParamName())
+                    } else {
+                        _homeUiState.update { homeUiState ->
+                            homeUiState.copy(isFeedLoading = false, articles = articles)
+                        }
                     }
                 }
         }

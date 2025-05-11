@@ -29,13 +29,8 @@ class NewsRepositoryImpl(
     override suspend fun getArticlesAsFlow(category: String): Flow<List<ArticleEntity>> =
         localNewsDataSource.getArticles(category)
             .map { dbArticles ->
-                if (dbArticles.isEmpty()) {
-                    refreshArticles(category)
-                    emptyList()
-                } else {
-                    dbArticles.map { dbArticle ->
-                        dbArticle.toDomain(dateConverter.intoElapsedTime(dbArticle.publishedAt))
-                    }
+                dbArticles.map { dbArticle ->
+                    dbArticle.toDomain(dateConverter.intoElapsedTime(dbArticle.publishedAt))
                 }
             }.flowOn(coroutineDispatcher)
 
