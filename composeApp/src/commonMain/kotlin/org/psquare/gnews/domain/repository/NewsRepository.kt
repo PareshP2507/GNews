@@ -7,7 +7,5 @@ interface NewsRepository {
 
     suspend fun getArticlesAsFlow(category: String): Flow<List<ArticleEntity>>
 
-    fun refreshArticles(category: String)
-
-    fun onCleared()
+    suspend fun refreshArticles(category: String)
 }

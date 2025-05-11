@@ -16,8 +16,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -49,7 +53,13 @@ fun HomeScreen(
     Scaffold(
         topBar = { HomeAppbar() },
         snackbarHost = { SnackbarHost(snackBarHostState) }) { innerPadding ->
-        Content(modifier = Modifier.padding(innerPadding), viewModel, onArticleClick)
+        Content(
+            modifier = Modifier.padding(innerPadding),
+            viewModel,
+            onArticleClick,
+            onRefreshClick = {
+                viewModel.refreshArticles()
+            })
     }
 }
 
@@ -68,9 +78,13 @@ private fun HomeAppbar(
 private fun Content(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel,
-    onArticleClick: (ArticleEntity) -> Unit
+    onArticleClick: (ArticleEntity) -> Unit,
+    onRefreshClick: () -> Unit
 ) {
     val uiState by viewModel.homeUiState.collectAsStateWithLifecycle()
+    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
+    val lastUpdatedText by viewModel.lastUpdatedText.collectAsStateWithLifecycle()
+
     Column(modifier = modifier.fillMaxSize()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -78,7 +92,7 @@ private fun Content(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(uiState.categories) { category ->
-                CategoryTab(category, category == uiState.selectedCategory) {
+                CategoryTab(category, category == selectedCategory) {
                     viewModel.onCategorySelected(category)
                 }
             }
@@ -90,16 +104,38 @@ private fun Content(
             if (articles.isEmpty()) {
                 EmptyState()
             } else {
-                FeedList(articles = articles, onArticleClick = onArticleClick)
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = lastUpdatedText,
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                        Box {
+                            if (uiState.isRefreshing) {
+                                Loader(modifier = Modifier.size(24.dp))
+                            } else {
+                                IconButton(onClick = { onRefreshClick.invoke() }) {
+                                    Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                                }
+                            }
+                        }
+                    }
+                    FeedList(articles = articles, onArticleClick = onArticleClick)
+                }
             }
         }
     }
 }
 
 @Composable
-fun Loader(modifier: Modifier = Modifier) {
+fun Loader(modifier: Modifier = Modifier.size(40.dp)) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(modifier = modifier.size(40.dp))
+        CircularProgressIndicator(modifier = modifier)
     }
 }
 

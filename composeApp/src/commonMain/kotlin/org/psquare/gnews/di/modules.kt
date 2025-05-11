@@ -30,6 +30,8 @@ import org.psquare.gnews.data.repository.news.LocalNewsDataSource
 import org.psquare.gnews.data.repository.news.NewsDataSource
 import org.psquare.gnews.data.repository.news.NewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.RemoteNewsDataSource
+import org.psquare.gnews.data.repository.refresh.CategoryRefreshRepository
+import org.psquare.gnews.data.repository.refresh.CategoryRefreshRepositoryImpl
 import org.psquare.gnews.domain.repository.NewsRepository
 import org.psquare.gnews.ui.screen.home.HomeViewModel
 
@@ -83,7 +85,16 @@ internal val datasourceModule = module {
 
 internal val repositoryModule = module {
     singleOf<DateConverter>(::DateConverterImpl)
-    factory<NewsRepository> { NewsRepositoryImpl(get(), get(), get(), get(named(DISPATCHER_IO))) }
+    single<CategoryRefreshRepository> { CategoryRefreshRepositoryImpl(get()) }
+    factory<NewsRepository> {
+        NewsRepositoryImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(named(DISPATCHER_IO))
+        )
+    }
 }
 
 internal val categoryModule = module {
@@ -99,7 +110,7 @@ internal val categoryModule = module {
 }
 
 internal val viewModelModule = module {
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
 }
 
 internal val dispatchersModule = module {

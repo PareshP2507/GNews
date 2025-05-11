@@ -5,6 +5,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.isDistantFuture
 import kotlinx.datetime.periodUntil
+import kotlin.time.Duration
 
 /** Implementation of [DateConverter] */
 class DateConverterImpl(private val clock: Clock = Clock.System) : DateConverter {
@@ -44,6 +45,15 @@ class DateConverterImpl(private val clock: Clock = Clock.System) : DateConverter
                 append("s ")
             }
             append("ago")
+        }
+    }
+
+    override fun formatDuration(duration: Duration): String {
+        return when {
+            duration.inWholeMinutes < 1 -> "just now"
+            duration.inWholeHours < 1 -> "${duration.inWholeMinutes} minutes ago"
+            duration.inWholeDays < 1 -> "${duration.inWholeHours} hours ago"
+            else -> "${duration.inWholeDays} days ago"
         }
     }
 }
