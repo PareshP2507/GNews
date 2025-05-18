@@ -14,4 +14,7 @@ interface ArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(articles: List<DbArticleEntity>)
+
+    @Query("DELETE FROM article_master WHERE category = :category")
+    suspend fun clearAll(category: String)
 }

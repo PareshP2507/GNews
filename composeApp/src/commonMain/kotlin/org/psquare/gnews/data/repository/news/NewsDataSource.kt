@@ -15,5 +15,7 @@ interface NewsDataSource {
         suspend fun getArticles(category: String): Flow<List<DbArticleEntity>>
 
         suspend fun insertArticles(articles: List<DbArticleEntity>)
+
+        suspend fun clearArticles(category: String)
     }
 }

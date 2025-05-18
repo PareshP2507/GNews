@@ -16,25 +16,26 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,20 +45,25 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.psquare.gnews.data.repository.category.Category
 import org.psquare.gnews.domain.entities.ArticleEntity
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onArticleClick: (ArticleEntity) -> Unit
 ) {
     val viewModel: HomeViewModel = koinViewModel<HomeViewModel>()
     val snackBarHostState = remember { SnackbarHostState() }
+    val scrollingBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
-        topBar = { HomeAppbar() },
-        snackbarHost = { SnackbarHost(snackBarHostState) }) { innerPadding ->
+        topBar = { HomeAppbar(scrollingBehavior = scrollingBehavior) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        modifier = Modifier.nestedScroll(scrollingBehavior.nestedScrollConnection)
+    ) { innerPadding ->
         Content(
             modifier = Modifier.padding(innerPadding),
             viewModel,
             onArticleClick,
-            onRefreshClick = {
+            onRefresh = {
                 viewModel.refreshArticles()
             })
     }
@@ -66,20 +72,23 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeAppbar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scrollingBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
         modifier = modifier,
-        title = { Text(text = "Top Headlines", style = MaterialTheme.typography.headlineMedium) }
+        title = { Text(text = "Top Headlines", style = MaterialTheme.typography.headlineMedium) },
+        scrollBehavior = scrollingBehavior
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel,
     onArticleClick: (ArticleEntity) -> Unit,
-    onRefreshClick: () -> Unit
+    onRefresh: () -> Unit
 ) {
     val uiState by viewModel.homeUiState.collectAsStateWithLifecycle()
     val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
@@ -97,45 +106,25 @@ private fun Content(
                 }
             }
         }
-        if (uiState.isFeedLoading) {
-            Loader()
-        } else {
+        PullToRefreshBox(
+            isRefreshing = uiState.isRefreshing,
+            onRefresh = onRefresh
+        ) {
             val articles = uiState.articles
             if (articles.isEmpty()) {
                 EmptyState()
             } else {
                 Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = lastUpdatedText,
-                            style = MaterialTheme.typography.labelMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                        Box {
-                            if (uiState.isRefreshing) {
-                                Loader(modifier = Modifier.size(24.dp))
-                            } else {
-                                IconButton(onClick = { onRefreshClick.invoke() }) {
-                                    Icon(Icons.Default.Refresh, contentDescription = "Refresh")
-                                }
-                            }
-                        }
-                    }
+                    Text(
+                        text = lastUpdatedText,
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                        textAlign = TextAlign.End
+                    )
                     FeedList(articles = articles, onArticleClick = onArticleClick)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Loader(modifier: Modifier = Modifier.size(40.dp)) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(modifier = modifier)
     }
 }
 

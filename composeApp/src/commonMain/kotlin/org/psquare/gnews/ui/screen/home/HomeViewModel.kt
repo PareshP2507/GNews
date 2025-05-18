@@ -77,7 +77,7 @@ class HomeViewModel(
     private fun retrieveArticlesFor(category: Category) {
         viewModelScope.launch {
             _homeUiState.update { homeUiState ->
-                homeUiState.copy(isFeedLoading = true)
+                homeUiState.copy(isRefreshing = true, articles = emptyList())
             }
             newsRepository.getArticlesAsFlow(category.urlParamName())
                 .collectLatest { articles ->
@@ -85,7 +85,7 @@ class HomeViewModel(
                         newsRepository.refreshArticles(category.urlParamName())
                     } else {
                         _homeUiState.update { homeUiState ->
-                            homeUiState.copy(isFeedLoading = false, articles = articles)
+                            homeUiState.copy(isRefreshing = false, articles = articles)
                         }
                     }
                 }
@@ -109,7 +109,6 @@ class HomeViewModel(
 
     data class HomeUiState(
         val categories: List<Category> = emptyList(),
-        val isFeedLoading: Boolean = false,
         val isRefreshing: Boolean = false,
         val articles: List<ArticleEntity> = emptyList()
     )

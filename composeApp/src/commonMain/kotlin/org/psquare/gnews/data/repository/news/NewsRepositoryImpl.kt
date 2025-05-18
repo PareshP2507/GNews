@@ -32,6 +32,7 @@ class NewsRepositoryImpl(
     override suspend fun refreshArticles(category: String) {
         val response = remoteNewsDataSource.getArticles(category)
         if (response is NetworkResult.Success) {
+            localNewsDataSource.clearArticles(category)
             localNewsDataSource.insertArticles(response.data.articles.map {
                 it.toDbEntity(category)
             })

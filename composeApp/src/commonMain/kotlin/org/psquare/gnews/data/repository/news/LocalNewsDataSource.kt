@@ -12,4 +12,6 @@ class LocalNewsDataSource(
 
     override suspend fun insertArticles(articles: List<DbArticleEntity>) =
         database.articleDao.insertAll(articles)
+
+    override suspend fun clearArticles(category: String) = database.articleDao.clearAll(category)
 }
