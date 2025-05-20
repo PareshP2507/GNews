@@ -25,7 +25,9 @@ class NewsRepositoryImpl(
         localNewsDataSource.getArticles(category)
             .map { dbArticles ->
                 dbArticles.map { dbArticle ->
-                    dbArticle.toDomain(dateConverter.intoElapsedTime(dbArticle.publishedAt))
+                    dbArticle.toDomain(
+                        elapsedTime = dateConverter.intoElapsedTime(dbArticle.publishedAt)
+                    )
                 }
             }.flowOn(coroutineDispatcher)
 
@@ -38,5 +40,13 @@ class NewsRepositoryImpl(
             })
             categoryRefreshRepository.saveLastRefresh(category, Clock.System.now())
         }
+    }
+
+    override suspend fun addBookmark(id: Long) {
+        localNewsDataSource.addBookmark(id)
+    }
+
+    override suspend fun removeBookmark(id: Long) {
+        localNewsDataSource.removeBookmark(id)
     }
 }

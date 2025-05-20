@@ -20,11 +20,12 @@ private fun createGNewsDatabase(context: Context): GNewsDatabase =
     Room.databaseBuilder<GNewsDatabase>(context = context, name = DB_FILE_NAME)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
+        .fallbackToDestructiveMigration(dropAllTables = true)
         .build()
 
 internal actual val platformDataStoreModule: Module
     get() = module {
-        single { createDataStore { createDataStoreFilePath(androidContext())  } }
+        single { createDataStore { createDataStoreFilePath(androidContext()) } }
     }
 
 private fun createDataStoreFilePath(context: Context) =

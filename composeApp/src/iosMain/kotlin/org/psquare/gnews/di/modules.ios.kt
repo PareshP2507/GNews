@@ -25,6 +25,7 @@ private fun createGNewsDatabase(): GNewsDatabase {
     return Room.databaseBuilder<GNewsDatabase>(name = dbFile)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
+        .fallbackToDestructiveMigration(dropAllTables = true)
         .build()
 }
 

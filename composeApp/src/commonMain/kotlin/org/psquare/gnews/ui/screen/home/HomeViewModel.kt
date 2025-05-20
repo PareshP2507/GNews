@@ -107,6 +107,14 @@ class HomeViewModel(
         }
     }
 
+    fun onBookmarkClick(articleEntity: ArticleEntity) {
+        if (articleEntity.isBookmarked) {
+            viewModelScope.launch { newsRepository.addBookmark(id = articleEntity.id) }
+        } else {
+            viewModelScope.launch { newsRepository.removeBookmark(id = articleEntity.id) }
+        }
+    }
+
     data class HomeUiState(
         val categories: List<Category> = emptyList(),
         val isRefreshing: Boolean = false,

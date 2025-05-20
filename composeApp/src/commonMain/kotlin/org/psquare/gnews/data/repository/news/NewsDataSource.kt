@@ -17,5 +17,11 @@ interface NewsDataSource {
         suspend fun insertArticles(articles: List<DbArticleEntity>)
 
         suspend fun clearArticles(category: String)
+
+        suspend fun addBookmark(id: Long)
+
+        suspend fun removeBookmark(id: Long)
+
+        suspend fun isBookmarked(id: Long): Boolean
     }
 }

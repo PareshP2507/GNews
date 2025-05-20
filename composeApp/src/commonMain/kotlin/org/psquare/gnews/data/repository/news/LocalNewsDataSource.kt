@@ -14,4 +14,10 @@ class LocalNewsDataSource(
         database.articleDao.insertAll(articles)
 
     override suspend fun clearArticles(category: String) = database.articleDao.clearAll(category)
+
+    override suspend fun addBookmark(id: Long) = database.articleDao.addBookmark(id)
+
+    override suspend fun removeBookmark(id: Long) = database.articleDao.removeBookmark(id)
+
+    override suspend fun isBookmarked(id: Long): Boolean = database.articleDao.isBookmarked(id)
 }

@@ -8,4 +8,8 @@ interface NewsRepository {
     suspend fun getArticlesAsFlow(category: String): Flow<List<ArticleEntity>>
 
     suspend fun refreshArticles(category: String)
+
+    suspend fun addBookmark(id: Long)
+
+    suspend fun removeBookmark(id: Long)
 }
