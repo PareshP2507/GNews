@@ -2,6 +2,8 @@
 
 GNews is a Kotlin Multiplatform project designed to deliver a seamless news browsing experience across Android and iOS platforms. It leverages modern libraries and frameworks to ensure a robust and efficient application.
 
+GNews is designed as an offline-first application, adhering to the single-source-of-truth paradigm. This approach ensures that data is fetched, stored, and synchronized efficiently, providing a consistent and reliable user experience even in scenarios with limited or no internet connectivity.
+
 ## Technology Stack
 
 - [**Compose Multiplatform**](https://www.jetbrains.com/compose-multiplatform/): Unified UI development for Android and iOS.
@@ -10,6 +12,8 @@ GNews is a Kotlin Multiplatform project designed to deliver a seamless news brow
 - [**Coroutines**](https://github.com/Kotlin/kotlinx.coroutines): Enables asynchronous operations for smooth performance.
 - [**Koin**](https://insert-koin.io/docs/reference/koin-mp/kmp/): Dependency injection framework for better modularity and testability.
 - [**Kamel**](https://github.com/Kamel-Media/Kamel): Efficient image loading and caching.
+- [**Room-KMP**](https://developer.android.com/kotlin/multiplatform/room): Offline storage.
+- [**Datastore-KMP**](https://developer.android.com/kotlin/multiplatform/datastore): For light weight caching.
 
 ## Project Structure
 
@@ -26,10 +30,7 @@ This module contains the iOS-specific entry point. It is also where you can add 
 
 Here are some snapshots of the app:
 
-|               Android               |                iOS               |
-|-------------------------------------|----------------------------------|
-| ![Light](snaps/android_light.png)   | ![Light](snaps/ios_light.png)    |
-| ![Dark](snaps/android_dark.png)     | ![Dark](snaps/ios_dark.png)      |
+<img src="snaps/ios_home_light.png" width="16%"/>  <img src="snaps/ios_detail_light.png" width="16%"/>  <img src="snaps/ios_bookmark_light.png" width="16%"/>  <img src="snaps/android_home_dark.png" width="16%"/> <img src="snaps/android_detail_dark.png" width="16%"/>  <img src="snaps/android_bookmark_dark.png" width="16%"/>
 
 ## Getting Started
 
