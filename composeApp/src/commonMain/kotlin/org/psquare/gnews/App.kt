@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.psquare.gnews.domain.entities.ArticleEntity
+import org.psquare.gnews.ui.screen.bookmark.BookmarkScreen
 import org.psquare.gnews.ui.screen.detail.ArticleDetailScreen
 import org.psquare.gnews.ui.screen.home.HomeScreen
 import org.psquare.gnews.ui.theme.AppTheme
@@ -20,14 +21,23 @@ fun App() {
 
         NavHost(navController = navController, startDestination = Home) {
             composable<Home> {
-                HomeScreen { article ->
+                HomeScreen(onArticleClick = { article ->
                     navController.navigate(route = article)
-                }
+                }, onBookmarkClick = {
+                    navController.navigate(route = Bookmarks)
+                })
             }
             composable<ArticleEntity> { backstackEntry ->
                 ArticleDetailScreen(backstackEntry.toRoute()) {
                     navController.navigateUp()
                 }
+            }
+            composable<Bookmarks> {
+                BookmarkScreen(onArticleClick = { article ->
+                    navController.navigate(route = article)
+                }, onBackClick = {
+                    navController.navigateUp()
+                })
             }
         }
     }
@@ -35,3 +45,6 @@ fun App() {
 
 @Serializable
 object Home
+
+@Serializable
+object Bookmarks

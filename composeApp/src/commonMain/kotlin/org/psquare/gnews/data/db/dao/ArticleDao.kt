@@ -23,4 +23,7 @@ interface ArticleDao {
 
     @Query("UPDATE article_master SET isBookmarked = 0 WHERE id = :id")
     suspend fun removeBookmark(id: Long)
+
+    @Query("SELECT * FROM article_master WHERE isBookmarked = 1")
+    fun getBookmarks(): Flow<List<DbArticleEntity>>
 }
