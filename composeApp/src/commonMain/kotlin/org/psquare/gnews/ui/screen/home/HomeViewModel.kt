@@ -81,11 +81,13 @@ class HomeViewModel(
             }
             newsRepository.getArticlesAsFlow(category.urlParamName())
                 .collectLatest { articles ->
-                    if (articles.isEmpty()) {
-                        newsRepository.refreshArticles(category.urlParamName())
-                    } else {
-                        _homeUiState.update { homeUiState ->
-                            homeUiState.copy(isRefreshing = false, articles = articles)
+                    if (category == _selectedCategory.value) {
+                        if (articles.isEmpty()) {
+                            newsRepository.refreshArticles(category.urlParamName())
+                        } else {
+                            _homeUiState.update { homeUiState ->
+                                homeUiState.copy(isRefreshing = false, articles = articles)
+                            }
                         }
                     }
                 }
