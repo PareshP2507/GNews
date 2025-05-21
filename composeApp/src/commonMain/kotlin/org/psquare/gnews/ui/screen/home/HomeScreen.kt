@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import gnews.composeapp.generated.resources.Res
-import gnews.composeapp.generated.resources.ic_bookmark_filled
+import gnews.composeapp.generated.resources.ic_bookmark_added
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.psquare.gnews.data.repository.category.Category
@@ -86,7 +86,7 @@ private fun HomeAppbar(
         actions = {
             IconButton(onClick = { onBookmarkClick.invoke() }) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_bookmark_filled),
+                    painter = painterResource(Res.drawable.ic_bookmark_added),
                     contentDescription = "Bookmarks"
                 )
             }

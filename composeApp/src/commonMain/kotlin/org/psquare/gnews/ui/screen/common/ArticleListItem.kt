@@ -22,8 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import gnews.composeapp.generated.resources.Res
-import gnews.composeapp.generated.resources.ic_bookmark
-import gnews.composeapp.generated.resources.ic_bookmark_filled
+import gnews.composeapp.generated.resources.ic_bookmark_add
+import gnews.composeapp.generated.resources.ic_bookmark_remove
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import org.jetbrains.compose.resources.painterResource
@@ -74,9 +74,9 @@ fun ArticleListItem(
             Icon(
                 painter = painterResource(
                     if (articleEntity.isBookmarked) {
-                        Res.drawable.ic_bookmark_filled
+                        Res.drawable.ic_bookmark_remove
                     } else {
-                        Res.drawable.ic_bookmark
+                        Res.drawable.ic_bookmark_add
                     }
                 ),
                 contentDescription = if (articleEntity.isBookmarked) {
