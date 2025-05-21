@@ -23,7 +23,4 @@ interface ArticleDao {
 
     @Query("UPDATE article_master SET isBookmarked = 0 WHERE id = :id")
     suspend fun removeBookmark(id: Long)
-
-    @Query("SELECT isBookmarked FROM article_master WHERE id = :id")
-    suspend fun isBookmarked(id: Long): Boolean
 }

@@ -1,8 +1,8 @@
 package org.psquare.gnews.data.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.psquare.gnews.domain.entities.ArticleEntity
 
@@ -38,7 +38,7 @@ data class DbArticleEntity(
     val sourceName: String,
     val sourceUrl: String,
     val category: String,
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean = false
 )
 
 fun RemoteArticle.toDbEntity(category: String) = DbArticleEntity(
@@ -50,8 +50,7 @@ fun RemoteArticle.toDbEntity(category: String) = DbArticleEntity(
     publishedAt = this.publishedAt,
     sourceName = this.source.name,
     sourceUrl = this.source.url,
-    category = category,
-    isBookmarked = false
+    category = category
 )
 
 fun DbArticleEntity.toDomain(elapsedTime: String) = ArticleEntity(

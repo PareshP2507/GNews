@@ -7,7 +7,7 @@ import org.psquare.gnews.data.entities.DbArticleEntity
 class LocalNewsDataSource(
     private val database: GNewsDatabase
 ) : NewsDataSource.Local {
-    override suspend fun getArticles(category: String): Flow<List<DbArticleEntity>> =
+    override fun getArticles(category: String): Flow<List<DbArticleEntity>> =
         database.articleDao.getAllAsFlow(category)
 
     override suspend fun insertArticles(articles: List<DbArticleEntity>) =
@@ -18,6 +18,4 @@ class LocalNewsDataSource(
     override suspend fun addBookmark(id: Long) = database.articleDao.addBookmark(id)
 
     override suspend fun removeBookmark(id: Long) = database.articleDao.removeBookmark(id)
-
-    override suspend fun isBookmarked(id: Long): Boolean = database.articleDao.isBookmarked(id)
 }

@@ -12,7 +12,7 @@ interface NewsDataSource {
     }
 
     interface Local {
-        suspend fun getArticles(category: String): Flow<List<DbArticleEntity>>
+        fun getArticles(category: String): Flow<List<DbArticleEntity>>
 
         suspend fun insertArticles(articles: List<DbArticleEntity>)
 
@@ -21,7 +21,5 @@ interface NewsDataSource {
         suspend fun addBookmark(id: Long)
 
         suspend fun removeBookmark(id: Long)
-
-        suspend fun isBookmarked(id: Long): Boolean
     }
 }

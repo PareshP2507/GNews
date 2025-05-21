@@ -21,7 +21,7 @@ class NewsRepositoryImpl(
     private val coroutineDispatcher: CoroutineDispatcher
 ) : NewsRepository {
 
-    override suspend fun getArticlesAsFlow(category: String): Flow<List<ArticleEntity>> =
+    override fun getArticlesAsFlow(category: String): Flow<List<ArticleEntity>> =
         localNewsDataSource.getArticles(category)
             .map { dbArticles ->
                 dbArticles.map { dbArticle ->
