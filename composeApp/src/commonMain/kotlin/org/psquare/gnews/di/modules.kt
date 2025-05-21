@@ -26,13 +26,18 @@ import org.psquare.gnews.data.repository.category.TechnologyCategory
 import org.psquare.gnews.data.repository.category.WorldCategory
 import org.psquare.gnews.data.api.NewsApiService
 import org.psquare.gnews.data.api.NewsApiServiceImpl
+import org.psquare.gnews.data.repository.bookmark.BookmarkDataSource
+import org.psquare.gnews.data.repository.bookmark.BookmarkRepositoryImpl
+import org.psquare.gnews.data.repository.bookmark.LocalBookmarkDataSource
 import org.psquare.gnews.data.repository.news.LocalNewsDataSource
 import org.psquare.gnews.data.repository.news.NewsDataSource
 import org.psquare.gnews.data.repository.news.NewsRepositoryImpl
 import org.psquare.gnews.data.repository.news.RemoteNewsDataSource
 import org.psquare.gnews.data.repository.refresh.CategoryRefreshRepository
 import org.psquare.gnews.data.repository.refresh.CategoryRefreshRepositoryImpl
+import org.psquare.gnews.domain.repository.BookmarkRepository
 import org.psquare.gnews.domain.repository.NewsRepository
+import org.psquare.gnews.ui.screen.bookmark.BookmarkViewModel
 import org.psquare.gnews.ui.screen.home.HomeViewModel
 
 private const val HOST_KEY = "endpoint"
@@ -81,6 +86,7 @@ internal val networkModule = module {
 internal val datasourceModule = module {
     factory<NewsDataSource.Remote> { RemoteNewsDataSource(get(), get(named(DISPATCHER_IO))) }
     factory<NewsDataSource.Local> { LocalNewsDataSource(get()) }
+    factory<BookmarkDataSource.Local> { LocalBookmarkDataSource(get()) }
 }
 
 internal val repositoryModule = module {
@@ -95,6 +101,7 @@ internal val repositoryModule = module {
             get(named(DISPATCHER_IO))
         )
     }
+    factory<BookmarkRepository> { BookmarkRepositoryImpl(get(), get()) }
 }
 
 internal val categoryModule = module {
@@ -111,6 +118,7 @@ internal val categoryModule = module {
 
 internal val viewModelModule = module {
     viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { BookmarkViewModel(get(), get()) }
 }
 
 internal val dispatchersModule = module {
